@@ -66,12 +66,100 @@ describe("GET /books/:id", function () {
     });
 });
 
-/** POST /books */
+/** POST /books Unit Test */
+describe("Book.create (unit)", function () {
+    test("Creates a new book in the DB", async function () {
+        const resp = await Book.create({
+            isbn: "1234567890",
+            amazon_url: "http://a.co/test",
+            author: "Test Author",
+            language: "english",
+            pages: 100,
+            publisher: "Test Publisher",
+            title: "Test Book",
+            year: 2024
+        });
+        expect(resp).toEqual({
+            isbn: "1234567890",
+            amazon_url: "http://a.co/test",
+            author: "Test Author",
+            language: "english",
+            pages: 100,
+            publisher: "Test Publisher",
+            title: "Test Book",
+            year: 2024
+        });
+    });
+});
+
+/** POST /books API TEST */
+describe("POST /books", function () {
+    test("Creates a new book via API", async function () {
+        const newBook = {
+            book: {
+                isbn: "1234567890",
+                amazon_url: "http://a.co/test",
+                author: "Test Author",
+                language: "english",
+                pages: 100,
+                publisher: "Test Publisher",
+                title: "Test Book",
+                year: 2024
+            }
+        };
+        const resp = await request(app)
+            .post("/books")
+            .send(newBook);
+        expect(resp.statusCode).toBe(201);
+        expect(resp.body).toEqual({
+            book: newBook.book
+        });
+    });
+});
 
 
 /** PUT /:isbn */
+describe("PUT /books/:isbn", function () {
+    test("Update a single book", async function () {
+        const resp = await request(app)
+            .put(`/books/${testBook.isbn}`)
+            .send({
+                book: {
+                    isbn: "0691161518",
+                    amazon_url: "http://a.co/updated",
+                    author: "Updated Author",
+                    language: "english",
+                    pages: 100,
+                    publisher: "Updated Publisher",
+                    title: "Test Book",
+                    year: 2024
+                }
+            });
+        expect(resp.statusCode).toBe(200);
+        expect(resp.body).toEqual({
+            book: {
+                isbn: "0691161518",
+                amazon_url: "http://a.co/updated",
+                author: "Updated Author",
+                language: "english",
+                pages: 100,
+                publisher: "Updated Publisher",
+                title: "Test Book",
+                year: 2024
+            }
+        });
+    });
+});
 
 /** DELETE /:isbn */
+describe("DELETE /books/:isbn", function () {
+    test("Deletes a single a book", async function () {
+        const resp = await request(app)
+            .delete(`/books/${testBook.isbn}`);
+        expect(resp.statusCode).toBe(200);
+        expect(resp.body).toEqual({ message: "Book deleted" });
+    });
+});
 
 afterAll(async function () {
     // close db connection
