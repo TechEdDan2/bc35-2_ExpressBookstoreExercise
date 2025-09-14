@@ -11,6 +11,11 @@ const bookRoutes = require("./routes/books");
 
 app.use("/books", bookRoutes);
 
+// Basic home page route
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to the Bookstore API" });
+});
+
 /** 404 handler */
 
 app.use(function (req, res, next) {
@@ -21,12 +26,12 @@ app.use(function (req, res, next) {
 
 /** general error handler */
 
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   res.status(err.status || 500);
 
   return res.json({
-    error: err,
-    message: err.message
+    error: err.message,
+    status: err.status || 500
   });
 });
 

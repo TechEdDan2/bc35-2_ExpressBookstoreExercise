@@ -1,0 +1,59 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Nest Book Schema",
+    "type": "object",
+    "properties": {
+        "book": {
+            "type": "object",
+            "properties": {
+                "isbn": {
+                    "type": "string"
+                },
+                "amazon_url": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "author": {
+                    "type": "string"
+                },
+                "language": {
+                    "type": "string"
+                },
+                "pages": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "publisher": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "integer",
+                    "title": "The Year Schema",
+                    "default": 0,
+                    "maximum": 2025,
+                    "examples": [
+                        2023
+                    ]
+                }
+            },
+            "required": [
+                "isbn",
+                "amazon_url",
+                "author",
+                "language",
+                "pages",
+                "publisher",
+                "title",
+                "year"
+            ],
+            "additionalProperties": false
+        }
+    },
+    "required": [
+        "book"
+    ],
+    "additionalProperties": false
+}
